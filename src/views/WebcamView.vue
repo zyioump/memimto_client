@@ -1,6 +1,6 @@
 <script>
 export default {
-    inject: ['api'],
+    inject: ['api', 'primary_color'],
     props: {
         album_id: {required: true}
     },
@@ -23,6 +23,7 @@ export default {
             }
         },
         takePicture: async function () {
+            this.errorMsg = ""
             let screenshotCanvas = this.$refs.screenshot
             const context = screenshotCanvas.getContext("2d")
             screenshotCanvas.width = this.width
@@ -35,7 +36,7 @@ export default {
             })).json()
             
             if (response.cluster == -1){
-                this.errorMsg = "Face not found"
+                this.errorMsg = "Unable to identify you"
             } else {
                 this.$router.push({
                     name: "albumCluster",
@@ -49,15 +50,28 @@ export default {
     },
     mounted: function () {
         this.requestCamera()
+    },
+    beforeUnmount: function() {
+        if (this.stream !== null) {
+            this.stream.getTracks().forEach(function(track) {
+                track.stop();
+            });
+        }
     }
 }
 </script>
 <template>
-    <div v-if="stream === null">Cannot access webcam</div>
-    <video autoplay ref="viewer"></video>
-    <canvas ref="screenshot" style="display: none;"></canvas>
-    <br/>
-    <input type="button" value="Show album" @click="takePicture">
-    <p v-if="errorMsg != ''" style="color: red;">{{ errorMsg }}</p>
-
+    <w-toolbar height="4em" fixed shadow>
+      <RouterLink to="/">
+        <w-icon :color="primary_color" size="2.5em">mdi mdi-image</w-icon>
+      </RouterLink>
+      <h1 class="title1 pa3">MemIMTo</h1>
+    </w-toolbar>
+    <w-flex grow column align-center justify-center>
+        <w-icon size="5em" color="red" v-if="stream === null" class="pa2">mdi mdi-camera-off</w-icon>
+        <video autoplay ref="viewer" style="max-width: 80%;" class="pa2"></video>
+        <canvas ref="screenshot" style="display: none;"></canvas>
+        <w-icon style="cursor:pointer;" @click="takePicture" class="pa2" size="4em" :color="primary_color">mdi mdi-image-filter-tilt-shift</w-icon>
+        <w-alert error v-if="errorMsg != ''">{{ errorMsg }}</w-alert>
+    </w-flex>
 </template>

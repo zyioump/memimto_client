@@ -2,7 +2,7 @@
 import { RouterLink } from 'vue-router'
 
 export default{
-  inject: ["api"],
+  inject: ["api", "primary_color"],
   data: function () {
     return {
       albums: []
@@ -20,10 +20,30 @@ export default{
 </script>
 
 <template>
-  <main>
-    <h1>Albums available :</h1>
-    <ul>
-      <li v-for="album in albums"><RouterLink :to="'/album/' + album.id">{{ album.name }}</RouterLink> <RouterLink :to="'/webcam/' + album.id">(webcam search)</RouterLink> - {{ album.length }} images</li>
-    </ul>
-  </main>
+  <div class="pa3">
+    <w-grid style="padding-top: 4em;" :columns="{ xs: 1, sm: 2, md: 3, lg: 4, xl: 6 }" gap="3">
+      <RouterLink style="text-decoration: none; color: inherit;" v-for="album in albums" :to="/album/ + album.id" >
+        <w-card>
+          <template #title>
+            <w-toolbar :bg-color="primary_color">
+              <h1 class="title3">{{ album.name }}</h1>
+              <div class="spacer"></div>
+              <RouterLink :to="'/webcam/' + album.id">
+                <w-icon color="white">mdi mdi-camera</w-icon>
+              </RouterLink>
+            </w-toolbar>
+          </template>
+          <w-grid columns="2">
+            <w-image lazy ratio="1" v-for="image in album.sample" :src="this.api + 'image/' + image.name"></w-image>
+          </w-grid>
+        </w-card>
+      </RouterLink>
+    </w-grid>
+  </div>
+  <w-toolbar height="4em" fixed shadow>
+    <RouterLink to="/">
+      <w-icon :color="primary_color" size="2.5em">mdi mdi-image</w-icon>
+    </RouterLink>
+    <h1 class="title1 pa3">MemIMTo</h1>
+  </w-toolbar>
 </template>

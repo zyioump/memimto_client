@@ -8,6 +8,7 @@ import '@mdi/font/css/materialdesignicons.min.css'
 
 const app = createApp(App)
 app.provide("api", "http://127.0.0.1:8000/")
+app.provide("primary_color", "blue")
 
 app.use(router)
 app.use(WaveUI, {theme: 'dark'})
