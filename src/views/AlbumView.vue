@@ -1,5 +1,6 @@
 <script>
 import { RouterLink } from 'vue-router'
+import Toolbar from '../components/Toolbar.vue'
 
 export default{
   inject: ["api", "primary_color"],
@@ -11,6 +12,7 @@ export default{
       required: false
     }
   },
+  components: {Toolbar},
   data: function () {
     return {
       album: {},
@@ -56,19 +58,14 @@ export default{
 </script>
 
 <template>
-  <w-toolbar height="4em" fixed shadow>
-    <RouterLink to="/">
-      <w-icon :color="primary_color" size="2.5em">mdi mdi-image</w-icon>
-    </RouterLink>
-    <h1 class="title1 pa3">{{ album.name }}</h1>
-    <div class="spacer"></div>
+  <Toolbar :title="album.name">
     <RouterLink :to="'/webcam/' + album_id">
       <w-icon :color="primary_color" size="2.5em">mdi mdi-camera</w-icon>
     </RouterLink>
     <RouterLink v-if="cluster !== undefined" :to="'/album/' + album.id">
       <w-icon :color="primary_color" size="2.5em">mdi mdi-all-inclusive-box</w-icon>
     </RouterLink>
-  </w-toolbar>
+  </Toolbar>
   <div class="pa3">
     <w-grid style="padding-top: 4em;" :columns="{ xs: 1, sm: 2, md: 3, lg: 4, xl: 6 }" gap="3">
       <w-image lazy @click="fullScreenImage(index)" v-for="(image, index) in album.images" style="cursor: zoom-in;" :key="image.name" :src="this.api + 'image/' + image.name" ratio="1"></w-image>

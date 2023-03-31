@@ -1,9 +1,12 @@
 <script>
+import Toolbar from '../components/Toolbar.vue';
+
 export default {
     inject: ['api', 'primary_color'],
     props: {
         album_id: {required: true}
     },
+    components: {Toolbar},
     data: function () {
         return {
             stream: null,
@@ -61,12 +64,7 @@ export default {
 }
 </script>
 <template>
-    <w-toolbar height="4em" fixed shadow>
-      <RouterLink to="/">
-        <w-icon :color="primary_color" size="2.5em">mdi mdi-image</w-icon>
-      </RouterLink>
-      <h1 class="title1 pa3">MemIMTo</h1>
-    </w-toolbar>
+    <Toolbar></Toolbar>
     <w-flex grow column align-center justify-center>
         <w-icon size="5em" color="red" v-if="stream === null" class="pa2">mdi mdi-camera-off</w-icon>
         <video autoplay ref="viewer" style="max-width: 80%;" class="pa2"></video>

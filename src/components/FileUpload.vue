@@ -47,7 +47,13 @@ export default {
                 req.setRequestHeader("chunkstart", this.currentChunk)
                 req.setRequestHeader("chunksize", chunk.size)
                 req.setRequestHeader("filename", this.file.name)
-                req.onload = () => this.uploadChunk()
+                req.onload = (event) => {
+                    if (event.target.status == 200) {
+                        this.uploadChunk()
+                    } else {
+                        this.errorMsg = "Server refused"
+                    }
+                }
                 req.send(chunk);
                 this.currentChunk += chunk.size
             }

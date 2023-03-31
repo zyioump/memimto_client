@@ -1,21 +1,23 @@
 <script>
 import { RouterLink } from 'vue-router'
+import Toolbar from '../components/Toolbar.vue'
 
 export default{
-  inject: ["api", "primary_color"],
-  data: function () {
-    return {
-      albums: []
-    }
-  },
-  methods: {
-    get: async function() {
-      this.albums = await (await fetch(this.api + "albums")).json()
-    }
-  },
-  mounted: function() {
-    this.get()
-  }
+    inject: ["api", "primary_color"],
+    data: function () {
+        return {
+            albums: []
+        };
+    },
+    methods: {
+        get: async function () {
+            this.albums = await (await fetch(this.api + "albums")).json();
+        }
+    },
+    mounted: function () {
+        this.get();
+    },
+    components: { Toolbar }
 }
 </script>
 
@@ -40,10 +42,5 @@ export default{
       </RouterLink>
     </w-grid>
   </div>
-  <w-toolbar height="4em" fixed shadow>
-    <RouterLink to="/">
-      <w-icon :color="primary_color" size="2.5em">mdi mdi-image</w-icon>
-    </RouterLink>
-    <h1 class="title1 pa3">MemIMTo</h1>
-  </w-toolbar>
+  <Toolbar></Toolbar>
 </template>
