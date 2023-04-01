@@ -59,10 +59,10 @@ export default{
 
 <template>
   <Toolbar :title="album.name">
-    <RouterLink :to="'/webcam/' + album_id">
-      <w-icon :color="primary_color" size="2.5em">mdi mdi-camera</w-icon>
+    <RouterLink class="ma1" :to="'/webcam/' + album_id">
+      <w-icon v-if="album.classifier" :color="primary_color" size="2.5em">mdi mdi-camera</w-icon>
     </RouterLink>
-    <RouterLink v-if="cluster !== undefined" :to="'/album/' + album.id">
+    <RouterLink class="ma1" v-if="cluster !== undefined" :to="'/album/' + album.id">
       <w-icon :color="primary_color" size="2.5em">mdi mdi-all-inclusive-box</w-icon>
     </RouterLink>
   </Toolbar>

@@ -4,6 +4,7 @@ import AlbumView from '../views/AlbumView.vue'
 import UploadView from '../views/UploadView.vue'
 import WebcamView from '../views/WebcamView.vue'
 import LoginView from '../views/LoginView.vue'
+import AlbumSettingsView from '../views/AlbumSettingsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,6 +36,12 @@ const router = createRouter({
       props: true,
       name: 'webcam',
       component: WebcamView
+    },
+    {
+      path: '/album_settings/:album_id',
+      props: true,
+      name: 'album_settings',
+      component: AlbumSettingsView
     },
     {
       path: '/login',

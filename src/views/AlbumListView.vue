@@ -30,7 +30,10 @@ export default{
             <w-toolbar :bg-color="primary_color">
               <h1 class="title3">{{ album.name }}</h1>
               <div class="spacer"></div>
-              <RouterLink :to="'/webcam/' + album.id">
+              <RouterLink class="ma1" :to="'/album_settings/' + album.id">
+                <w-icon color="white">mdi mdi-cog</w-icon>
+              </RouterLink>
+              <RouterLink class="ma1" v-if="album.classifier" :to="'/webcam/' + album.id">
                 <w-icon color="white">mdi mdi-camera</w-icon>
               </RouterLink>
             </w-toolbar>
