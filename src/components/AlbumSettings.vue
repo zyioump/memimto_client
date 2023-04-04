@@ -3,7 +3,7 @@ import Toolbar from '../components/Toolbar.vue'
 
 export default {
     inject: ["api", "primary_color"],
-    props: {album_id: {required: true}},
+    props: {album: {required: true}},
     components: {Toolbar},
     data: function () {
         return {
@@ -11,18 +11,10 @@ export default {
             errorMsg: ""
         };
     },
-    watch: {
-        album_id: function() {
-            this.get()
-        }
-    },
     methods: {
-        get: async function () {
-            this.album = await (await fetch(this.api + "album/" + this.album_id)).json()
-        },
         recluster: async function () {
             this.errorMsg = ""
-            let response = await fetch(this.api + "recluster/" + this.album_id, {
+            let response = await fetch(this.api + "recluster/" + this.album.id, {
                 headers: {
                     "Authorization": this.jwt
                 }
@@ -33,14 +25,13 @@ export default {
         },
         deleteAlbum: async function() {
             this.errorMsg = ""
-            let response = await fetch(this.api + "delete/" + this.album_id, {
+            let response = await fetch(this.api + "delete/" + this.album.id, {
                 headers: {
                     "Authorization": this.jwt
                 }
             })
             if (response.status == 401) this.$router.push("/login")
             else if (response.status != 200) this.errorMsg = "Something went wrong"
-            else this.$router.push("/")
         }
     },
     computed: {
@@ -53,7 +44,6 @@ export default {
     },
     mounted: function () {
         if (!this.is_logged) this.$router.push("/login")
-        else this.get()
     },
 }
 </script>
